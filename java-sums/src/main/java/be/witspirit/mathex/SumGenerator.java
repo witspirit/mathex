@@ -16,22 +16,28 @@ public class SumGenerator {
 
     public List<Sum> generate(int nrOfSums) {
         ArrayList<Sum> sums = new ArrayList<Sum>();
-        for (int i = 0; i < 10; i++) {
-            Sum sum = null;
-            int output = minValue - 1;
-            while (output < minValue || output > maxValue) {
-                int input1 = generateInput(random);
-                int input2 = generateInput(random);
-
-                sum = new Sum(input1, random.nextBoolean() ? "+" : "-", input2);
-                output = sum.getOutput();
-            }
+        for (int i = 0; i < nrOfSums; i++) {
+            Sum sum = generateSum();
             sums.add(sum);
         }
         return sums;
     }
 
-    private int generateInput(Random random) {
+    private Sum generateSum() {
+        Sum sum = null;
+        int output = minValue - 1;
+        while (output < minValue || output > maxValue) {
+            int input1 = generateInput();
+            String operator = random.nextBoolean() ? "+" : "-";
+            int input2 = generateInput();
+
+            sum = new Sum(input1, operator, input2);
+            output = sum.getOutput();
+        }
+        return sum;
+    }
+
+    private int generateInput() {
         return minValue + random.nextInt(maxValue + 1 - minValue);
     }
 }
