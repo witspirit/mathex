@@ -47,9 +47,7 @@ public class Sum {
 
         if (input1 != sum.input1) return false;
         if (input2 != sum.input2) return false;
-        if (!operator.equals(sum.operator)) return false;
-
-        return true;
+        return operator.equals(sum.operator);
     }
 
     @Override
