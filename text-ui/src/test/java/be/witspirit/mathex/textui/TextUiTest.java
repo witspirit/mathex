@@ -3,7 +3,6 @@ package be.witspirit.mathex.textui;
 
 import be.witspirit.mathex.textui.uimodel.UiInteraction;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
