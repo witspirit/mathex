@@ -1,18 +1,28 @@
 package be.witspirit.mathex.textui.uimodel;
 
 import be.witspirit.mathex.textui.TextUi;
+import org.junit.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Representation of the Text UI from a Test perspective (inspired by the Page model pattern)
  */
 public class UiInteraction {
 
-    protected TextUi ui;
-    protected String content;
+    private TextUi ui;
+    private String content;
+    private List<UiLine> lines = new ArrayList<>();
 
     protected UiInteraction(TextUi ui, String content) {
         this.ui = ui;
         this.content = content;
+
+        for (String line : content.split("\n")) {
+            lines.add(new UiLine(line));
+        }
+
     }
 
     public static UiInteraction launch() {
@@ -34,6 +44,18 @@ public class UiInteraction {
 
     public UiInteraction command(String command) {
         return new UiInteraction(ui, ui.command(command));
+    }
+
+    public UiInteraction assertLines(String... expextedLines) {
+        String[] contentLines = content.split("\n");
+
+        Assert.assertArrayEquals(expextedLines, contentLines);
+
+        return this;
+    }
+
+    public UiLine line(int lineNr) {
+        return lines.get(lineNr);
     }
 
 }
