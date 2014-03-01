@@ -4,11 +4,15 @@ package be.witspirit.mathex.textui;
 import be.witspirit.mathex.Sum;
 import be.witspirit.mathex.SumGenerator;
 
+import java.io.*;
+
 public class TextUi {
 
     private CommandHandler commandHandler = new StartHandler();
+    private boolean run = false;
 
     public String start() {
+        run = true;
         return commandHandler.instructUser();
     }
 
@@ -67,6 +71,7 @@ public class TextUi {
     private class StopHandler extends CommonHandler {
         @Override
         public String instructUser() {
+            run = false;
             return "";
         }
 
@@ -105,6 +110,23 @@ public class TextUi {
             } catch (NumberFormatException nfe) {
                 return super.handleUserInput(command);
             }
+        }
+    }
+
+
+
+    public static void main(String... args) throws IOException {
+        TextUi ui = new TextUi();
+        ui.runConsole(System.out, System.in);
+    }
+
+    public void runConsole(PrintStream out, InputStream in) throws IOException {
+        out.println(start());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+        while (run) {
+            String userInput = reader.readLine();
+            out.println(command(userInput));
         }
     }
 }

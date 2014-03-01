@@ -70,10 +70,6 @@ public class TextUiTest {
         ui.command(0).command("FAULT").line(0).assertEquals("Antwoord niet begrepen");
     }
 
-    // Should I retest the boundaries of the exercises... They are covored via SumGeneratorTest
-    // On the other hand, I have no driver in the current tests to introduce the SumGenerator
-    // And I don't want to reimplement the test - Perhaps I can extract the common part ?
-
     @Test
     public void ensureDiverse() {
         ui = ui.command(10);
