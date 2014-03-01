@@ -31,6 +31,7 @@ public class TextUi {
 
         @Override
         public String handleUserInput(String userInput) {
+            userInput = userInput.toUpperCase();
             switch (userInput) {
                 case "S":
                     commandHandler = new StopHandler();
@@ -88,11 +89,11 @@ public class TextUi {
 
         public ExerciseHandler(SumGenerator sumGen) {
             this.sumGen = sumGen;
+            currentSum = sumGen.generateSum();
         }
 
         @Override
         public String instructUser() {
-            currentSum = sumGen.generateSum();
             return String.format("%d %s %d = ", currentSum.getInput1(), currentSum.getOperator(), currentSum.getInput2());
         }
 
@@ -102,8 +103,10 @@ public class TextUi {
                 int solution = num(command);
 
                 if (solution == currentSum.getOutput()) {
+                    currentSum = sumGen.generateSum();
                     return "Juist !";
                 } else {
+                    // On mistake we keep the current sum
                     return "Fout !";
                 }
 
@@ -121,12 +124,12 @@ public class TextUi {
     }
 
     public void runConsole(PrintStream out, InputStream in) throws IOException {
-        out.println(start());
+        out.print(start());
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
         while (run) {
             String userInput = reader.readLine();
-            out.println(command(userInput));
+            out.print(command(userInput));
         }
     }
 }

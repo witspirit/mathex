@@ -33,7 +33,16 @@ public class TextUiTest {
 
         ui.command("S").assertLines("Tot gauw !");
 
-        // And we expect the TextUi to have stopped
+        // No further commands allowed
+        try {
+            ui.command("5");
+            Assert.fail("UI accepted commands after stop");
+        } catch (IllegalStateException e) {
+            Assert.assertEquals("Ui has been stopped", e.getMessage());
+        }
+
+        // And we also accept lowercase
+        UiInteraction.launch().command("s").assertLines("Tot gauw !");
     }
 
     @Test
@@ -51,13 +60,16 @@ public class TextUiTest {
 
     @Test
     public void singleFaultyAnswer() {
-        ui = ui.command(0); // Should only lead to a 0+0 or 0-0 exercise
+        ui = ui.command(10);
         ui.line(0).assertEquals("Ok, hier gaan we...");
-        ui.line(1).extractSum();
+        Sum sumOrig = ui.line(1).extractSum();
 
-        ui = ui.command(6);
+        ui = ui.command(sumOrig.getOutput()+1); // Ensure faulty answer
         ui.line(0).assertEquals("Fout !");
-        ui.line(1).extractSum();
+        Sum sumAfterError = ui.line(1).extractSum();
+
+        // After an error we present the original exercise again
+        Assert.assertEquals(sumOrig, sumAfterError);
     }
 
     @Test
