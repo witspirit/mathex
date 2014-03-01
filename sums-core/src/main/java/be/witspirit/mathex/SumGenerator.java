@@ -15,7 +15,7 @@ public class SumGenerator {
     }
 
     public List<Sum> generate(int nrOfSums) {
-        ArrayList<Sum> sums = new ArrayList<Sum>();
+        ArrayList<Sum> sums = new ArrayList<>();
         for (int i = 0; i < nrOfSums; i++) {
             Sum sum = generateSum();
             sums.add(sum);
@@ -23,7 +23,7 @@ public class SumGenerator {
         return sums;
     }
 
-    private Sum generateSum() {
+    public Sum generateSum() {
         Sum sum = null;
         int output = minValue - 1;
         while (output < minValue || output > maxValue) {

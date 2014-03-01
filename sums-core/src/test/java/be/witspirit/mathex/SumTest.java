@@ -22,7 +22,7 @@ public class SumTest {
 
     @Test
     public void checkSumToString() {
-        Assert.assertEquals("0+1=1", new Sum(0, "+", 1).toString());
+        Assert.assertEquals("0 + 1 = 1", new Sum(0, "+", 1).toString());
     }
 
     @Test

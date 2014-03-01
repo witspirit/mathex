@@ -35,7 +35,7 @@ public class Sum {
 
     @Override
     public String toString() {
-        return input1 + operator + input2 + "=" + output;
+        return input1 + " " + operator + " " + input2 + " = " + output;
     }
 
     @Override

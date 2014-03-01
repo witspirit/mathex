@@ -1,10 +1,16 @@
 package be.witspirit.mathex.textui;
 
 
+import be.witspirit.mathex.Sum;
+import be.witspirit.mathex.support.SumAssert;
 import be.witspirit.mathex.textui.uimodel.UiInteraction;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextUiTest {
 
@@ -32,34 +38,58 @@ public class TextUiTest {
 
     @Test
     public void singleCorrectAnswer() {
-        ui = ui.command("0"); // Should only lead to a 0+0 or 0-0 exercise
+        ui = ui.command(0); // Should only lead to a 0+0 or 0-0 exercise
         ui.line(0).assertEquals("Ok, hier gaan we...");
-        ui.line(1).assertMatches("0 (\\+|-) 0 = ");
+        Sum sum = ui.line(1).extractSum();
+        Assert.assertEquals(0, sum.getInput1());
+        Assert.assertEquals(0, sum.getInput2());
 
-        ui = ui.command("0");
+        ui = ui.command(Integer.toString(sum.getOutput()));
         ui.line(0).assertEquals("Juist !");
-        ui.line(1).assertMatches("0 (\\+|-) 0 = ");
+        ui.line(1).extractSum();
     }
 
     @Test
     public void singleFaultyAnswer() {
-        ui = ui.command("0"); // Should only lead to a 0+0 or 0-0 exercise
+        ui = ui.command(0); // Should only lead to a 0+0 or 0-0 exercise
         ui.line(0).assertEquals("Ok, hier gaan we...");
-        ui.line(1).assertMatches("0 (\\+|-) 0 = ");
+        ui.line(1).extractSum();
 
-        ui = ui.command("6");
+        ui = ui.command(6);
         ui.line(0).assertEquals("Fout !");
-        ui.line(1).assertMatches("0 (\\+|-) 0 = ");
+        ui.line(1).extractSum();
     }
 
     @Test
     public void faultyNonNumericInputOnSetupQuestion() {
-        ui.command("FAULT").assertLines("Antwoord niet begrepen");
+        ui.command("FAULT").line(0).assertEquals("Antwoord niet begrepen");
     }
 
     @Test
     public void faultyNonNumericInputOnExerciseQuestion() {
-        ui.command("0").command("FAULT").assertLines("Antwoord niet begrepen");
+        ui.command(0).command("FAULT").line(0).assertEquals("Antwoord niet begrepen");
     }
+
+    // Should I retest the boundaries of the exercises... They are covored via SumGeneratorTest
+    // On the other hand, I have no driver in the current tests to introduce the SumGenerator
+    // And I don't want to reimplement the test - Perhaps I can extract the common part ?
+
+    @Test
+    public void ensureDiverse() {
+        ui = ui.command(10);
+
+        // Let's make a few exercises and collect them in sums
+        List<Sum> sums = new ArrayList<>();
+        for (int i=0; i < 10; i++) {
+            System.out.println(ui.getContent());
+
+            Sum sum = ui.line(1).extractSum();
+            sums.add(sum);
+            ui = ui.command(sum.getOutput());
+        }
+
+        SumAssert.assertCompliantAndDiverse(10, 0, 10, sums);
+    }
+
 
 }

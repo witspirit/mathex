@@ -46,6 +46,10 @@ public class UiInteraction {
         return new UiInteraction(ui, ui.command(command));
     }
 
+    public UiInteraction command(int value) {
+        return command(Integer.toString(value));
+    }
+
     public UiInteraction assertLines(String... expextedLines) {
         String[] contentLines = content.split("\n");
 
