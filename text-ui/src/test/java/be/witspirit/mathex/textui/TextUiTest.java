@@ -29,7 +29,7 @@ public class TextUiTest {
     @Test
     public void startStop() { // Covers the starting message and the stopping message
         UiInteraction ui = UiInteraction.launch();
-        ui.assertLines("Welkom bij rekenoefeningen !","Tot hoeveel mogen de oefeningen gaan ?");
+        ui.assertLines("Welkom bij rekenoefeningen !","Tot hoeveel mogen de oefeningen gaan ? ");
 
         ui.command("S").assertLines("Tot gauw !");
 
@@ -97,6 +97,40 @@ public class TextUiTest {
         }
 
         SumAssert.assertCompliantAndDiverse(10, 0, 10, sums);
+    }
+
+    @Test
+    public void statsAllCorrect() {
+        ui.command(10).make().correct(5);
+
+        Stats stats = ui.getStats();
+
+        Assert.assertEquals(5, stats.getTotal());
+        Assert.assertEquals(5, stats.getCorrect());
+        Assert.assertEquals(0, stats.getFault());
+    }
+
+    @Test
+    public void statsMixed() {
+        ui.command(10).make().correct(5).fault(5, 0).correct(2).fault(2,1);
+
+        Stats stats = ui.getStats();
+
+        Assert.assertEquals(14, stats.getTotal());
+        Assert.assertEquals(7, stats.getCorrect());
+        Assert.assertEquals(9, stats.getFault());
+    }
+
+    @Test
+    public void statsInUi() {
+        ui = ui.command(10).make().correct(92).fault(8, 0).ui();
+
+        ui = ui.command("i");
+        ui.line(0).assertEquals("Statistieken");
+        ui.line(1).assertEquals("Correct = 92");
+        ui.line(2).assertEquals("Fout = 8");
+        ui.line(3).assertEquals("Totaal = 100");
+        ui.line(4).assertEquals("Score = 92,00 %");
     }
 
 

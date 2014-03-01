@@ -1,5 +1,6 @@
 package be.witspirit.mathex.textui.uimodel;
 
+import be.witspirit.mathex.textui.Stats;
 import be.witspirit.mathex.textui.TextUi;
 import org.junit.Assert;
 
@@ -62,4 +63,11 @@ public class UiInteraction {
         return lines.get(lineNr);
     }
 
+    public Stats getStats() {
+        return ui.getStats();
+    }
+
+    public ExerciseMaker make() {
+        return new ExerciseMaker(this);
+    }
 }

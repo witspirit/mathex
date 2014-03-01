@@ -9,6 +9,7 @@ import java.io.*;
 public class TextUi {
 
     private CommandHandler commandHandler = new StartHandler();
+    private Stats stats = new Stats();
     private boolean run = false;
 
     public String start() {
@@ -20,6 +21,10 @@ public class TextUi {
         String feedback = commandHandler.handleUserInput(command);
         String instruction = commandHandler.instructUser();
         return feedback+"\n"+instruction;
+    }
+
+    public Stats getStats() {
+        return stats;
     }
 
     private class CommonHandler implements CommandHandler {
@@ -36,6 +41,15 @@ public class TextUi {
                 case "S":
                     commandHandler = new StopHandler();
                     return "Tot gauw !";
+                case "I":
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Statistieken\n");
+                    sb.append("Correct = ").append(stats.getCorrect()).append("\n");
+                    sb.append("Fout = ").append(stats.getFault()).append("\n");
+                    sb.append("Totaal = ").append(stats.getTotal()).append("\n");
+                    double score = ((double) stats.getCorrect() / (double) stats.getTotal()) * 100;
+                    sb.append("Score = ").append(String.format("%2.2f %%", score));
+                    return sb.toString();
             }
             return "Antwoord niet begrepen";
         }
@@ -51,7 +65,7 @@ public class TextUi {
         @Override
         public String instructUser() {
             return "Welkom bij rekenoefeningen !\n" +
-                   "Tot hoeveel mogen de oefeningen gaan ?";
+                   "Tot hoeveel mogen de oefeningen gaan ? ";
         }
 
         @Override
@@ -86,10 +100,11 @@ public class TextUi {
 
         private SumGenerator sumGen;
         private Sum currentSum = null;
+        private boolean repeated = false;
 
         public ExerciseHandler(SumGenerator sumGen) {
             this.sumGen = sumGen;
-            currentSum = sumGen.generateSum();
+            currentSum = sumGen.generateSum(); // We don't count the first exercise, as the last one will not be answered either
         }
 
         @Override
@@ -103,10 +118,19 @@ public class TextUi {
                 int solution = num(command);
 
                 if (solution == currentSum.getOutput()) {
+                    if (!repeated) {
+                        stats.incCorrect();
+                    }
+
+                    repeated = false;
                     currentSum = sumGen.generateSum();
+                    stats.incTotal();
+
                     return "Juist !";
                 } else {
                     // On mistake we keep the current sum
+                    stats.incFault();
+                    repeated = true;
                     return "Fout !";
                 }
 
