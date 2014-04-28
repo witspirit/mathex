@@ -46,8 +46,22 @@ public class TextUiTest {
     }
 
     @Test
+    public void selectSimpleSum() {
+        ui = ui.command(10).assertLines("Welk soort oefeningen had je graag gemaakt ?", "A) 1 + 2 = 3", "B) 1 + 2 + 3 = 6", "Jouw keuze: ");
+        ui = ui.command("A");
+        ui.line(1).assertSum();
+    }
+
+    @Test
+    public void selectSum3() {
+        ui = ui.command(10).assertLines("Welk soort oefeningen had je graag gemaakt ?", "A) 1 + 2 = 3", "B) 1 + 2 + 3 = 6", "Jouw keuze: ");
+        ui = ui.command("B");
+        ui.line(1).assertSum3();
+    }
+
+    @Test
     public void singleCorrectAnswer() {
-        ui = ui.command(0); // Should only lead to a 0+0 or 0-0 exercise
+        ui = ui.command(0).command("A"); // Should only lead to a 0+0 or 0-0 exercise
         ui.line(0).assertEquals("Ok, hier gaan we...");
         Sum sum = ui.line(1).extractSum();
         Assert.assertEquals(0, sum.getInput1());
@@ -60,7 +74,7 @@ public class TextUiTest {
 
     @Test
     public void singleFaultyAnswer() {
-        ui = ui.command(10);
+        ui = ui.command(10).command("A");
         ui.line(0).assertEquals("Ok, hier gaan we...");
         Sum sumOrig = ui.line(1).extractSum();
 
@@ -84,7 +98,7 @@ public class TextUiTest {
 
     @Test
     public void ensureDiverse() {
-        ui = ui.command(10);
+        ui = ui.command(10).command("A");
 
         // Let's make a few exercises and collect them in sums
         List<Sum> sums = new ArrayList<>();
@@ -96,12 +110,12 @@ public class TextUiTest {
             ui = ui.command(sum.getOutput());
         }
 
-        SumAssert.assertCompliantAndDiverse(10, 0, 10, sums);
+        SumAssert.assertCompliantAndDiverseSums(10, 0, 10, sums);
     }
 
     @Test
     public void statsAllCorrect() {
-        ui.command(10).make().correct(5);
+        ui.command(10).command("A").make().correct(5);
 
         Stats stats = ui.getStats();
 
@@ -112,7 +126,7 @@ public class TextUiTest {
 
     @Test
     public void statsMixed() {
-        ui.command(10).make().correct(5).fault(5, 0).correct(2).fault(2,1);
+        ui.command(10).command("A").make().correct(5).fault(5, 0).correct(2).fault(2,1);
 
         Stats stats = ui.getStats();
 
@@ -123,7 +137,7 @@ public class TextUiTest {
 
     @Test
     public void statsInUi() {
-        ui = ui.command(10).make().correct(92).fault(8, 0).ui();
+        ui = ui.command(10).command("A").make().correct(92).fault(8, 0).ui();
 
         ui = ui.command("i");
         ui.line(0).assertEquals("Statistieken");

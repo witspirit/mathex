@@ -40,4 +40,26 @@ public class SumGenerator {
     private int generateInput() {
         return minValue + random.nextInt(maxValue + 1 - minValue);
     }
+
+    public Sum3 generateSum3() {
+        Sum3 sum = null;
+        int output = minValue - 1;
+        while (output < minValue || output > maxValue) {
+            int input1 = generateInput();
+            int input2 = generateInput();
+            int input3 = generateInput();
+
+            sum = new Sum3(input1, input2, input3);
+            output = sum.getOutput();
+        }
+        return sum;
+    }
+
+    public List<Sum3> generate3(int nrOfSums) {
+        List<Sum3> sums = new ArrayList<>(nrOfSums);
+        for (int i=0; i < nrOfSums; i++) {
+            sums.add(generateSum3());
+        }
+        return sums;
+    }
 }

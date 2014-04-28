@@ -6,7 +6,7 @@ import org.junit.Test;
 public class SumTest {
 
     @Test
-    public void sumEqualityTst() {
+    public void sumEqualityTest() {
         Sum sum1 = new Sum(0, "+", 1);
         Sum sum2 = new Sum(0, "+", 1);
         Sum sum3 = new Sum(1, "+", 1);
