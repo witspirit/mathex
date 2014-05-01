@@ -2,6 +2,9 @@ package be.witspirit.mathex.textui.uimodel;
 
 import be.witspirit.mathex.Sum;
 import be.witspirit.mathex.Sum3;
+import be.witspirit.mathex.support.Sum3RepAdapter;
+import be.witspirit.mathex.support.SumRep;
+import be.witspirit.mathex.support.SumRepAdapter;
 import org.junit.Assert;
 
 import java.util.regex.Matcher;

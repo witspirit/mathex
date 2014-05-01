@@ -1,5 +1,7 @@
 package be.witspirit.mathex.textui.uimodel;
 
+import be.witspirit.mathex.support.SumRep;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class ExerciseMaker {
     public ExerciseMaker correct(int nrOfExercises) {
         for (int i=0; i < nrOfExercises; i++) {
             SumRep sum = ui.line(1).extractSumRep();
+            sums.add(sum);
             ui = ui.command(sum.getOutput());
         }
         return this;

@@ -1,4 +1,4 @@
-package be.witspirit.mathex.textui.uimodel;
+package be.witspirit.mathex.support;
 
 /**
  * Wrapper representation of a Sum with a unified interface

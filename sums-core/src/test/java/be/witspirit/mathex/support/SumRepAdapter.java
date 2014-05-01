@@ -1,4 +1,4 @@
-package be.witspirit.mathex.textui.uimodel;
+package be.witspirit.mathex.support;
 
 import be.witspirit.mathex.Sum;
 
@@ -39,5 +39,27 @@ public class SumRepAdapter implements SumRep {
     @Override
     public int getOutput() {
         return sum.getOutput();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SumRepAdapter that = (SumRepAdapter) o;
+
+        if (!sum.equals(that.sum)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return sum.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return sum.toString();
     }
 }

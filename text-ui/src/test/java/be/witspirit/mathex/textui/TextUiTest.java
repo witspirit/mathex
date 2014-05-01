@@ -2,17 +2,15 @@ package be.witspirit.mathex.textui;
 
 
 import be.witspirit.mathex.Sum;
-import be.witspirit.mathex.support.SumAssert;
 import be.witspirit.mathex.textui.uimodel.UiInteraction;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TextUiTest {
+
+    public static final String ANTWOORD_NIET_BEGREPEN = "Antwoord niet begrepen";
 
     private UiInteraction ui;
 
@@ -88,29 +86,22 @@ public class TextUiTest {
 
     @Test
     public void faultyNonNumericInputOnSetupQuestion() {
-        ui.command("FAULT").line(0).assertEquals("Antwoord niet begrepen");
+        ui.command("FAULT").line(0).assertEquals(ANTWOORD_NIET_BEGREPEN);
+    }
+
+    @Test
+    public void faultyNumericInputOnTypeQuestion() {
+        ui.command(0).command(0).line(0).assertEquals(ANTWOORD_NIET_BEGREPEN);
+    }
+
+    @Test
+    public void faultyTextInputOnTypeQuestion() {
+        ui.command(0).command("Z").line(0).assertEquals(ANTWOORD_NIET_BEGREPEN);
     }
 
     @Test
     public void faultyNonNumericInputOnExerciseQuestion() {
-        ui.command(0).command("FAULT").line(0).assertEquals("Antwoord niet begrepen");
-    }
-
-    @Test
-    public void ensureDiverse() {
-        ui = ui.command(10).command("A");
-
-        // Let's make a few exercises and collect them in sums
-        List<Sum> sums = new ArrayList<>();
-        for (int i=0; i < 10; i++) {
-            System.out.println(ui.getContent());
-
-            Sum sum = ui.line(1).extractSum();
-            sums.add(sum);
-            ui = ui.command(sum.getOutput());
-        }
-
-        SumAssert.assertCompliantAndDiverseSums(10, 0, 10, sums);
+        ui.command(0).command("FAULT").line(0).assertEquals(ANTWOORD_NIET_BEGREPEN);
     }
 
 }
