@@ -138,7 +138,7 @@ public class TextUi {
 
         public SumExerciseHandler(SumGenerator sumGen) {
             this.sumGen = sumGen;
-            currentSum = sumGen.generateSum(); // We don't count the first exercise, as the last one will not be answered either
+            currentSum = sumGen.sum(); // We don't count the first exercise, as the last one will not be answered either
         }
 
         @Override
@@ -157,7 +157,7 @@ public class TextUi {
                     }
 
                     repeated = false;
-                    currentSum = sumGen.generateSum();
+                    currentSum = sumGen.sum();
                     stats.incTotal();
 
                     return "Juist !";
@@ -182,7 +182,7 @@ public class TextUi {
 
         public Sum3ExerciseHandler(SumGenerator sumGen) {
             this.sumGen = sumGen;
-            currentSum = sumGen.generateSum3(); // We don't count the first exercise, as the last one will not be answered either
+            currentSum = sumGen.sum3(); // We don't count the first exercise, as the last one will not be answered either
         }
 
         @Override
@@ -201,7 +201,7 @@ public class TextUi {
                     }
 
                     repeated = false;
-                    currentSum = sumGen.generateSum3();
+                    currentSum = sumGen.sum3();
                     stats.incTotal();
 
                     return "Juist !";

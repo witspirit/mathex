@@ -3,7 +3,7 @@ package be.witspirit.mathex;
 /**
  * A Sum with 3 terms. The plus operator is assumed.
  */
-public class Sum3 {
+public class Sum3 implements HasOutput {
 
 
     private final int t1;

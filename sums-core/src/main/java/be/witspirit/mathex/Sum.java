@@ -1,6 +1,6 @@
 package be.witspirit.mathex;
 
-public class Sum {
+public class Sum implements HasOutput {
     private int input1;
     private int input2;
     private String operator="+";

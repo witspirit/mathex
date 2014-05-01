@@ -3,6 +3,7 @@ package be.witspirit.mathex;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class SumGenerator {
     private final int minValue;
@@ -14,52 +15,50 @@ public class SumGenerator {
         this.maxValue = maxValue;
     }
 
-    public List<Sum> generate(int nrOfSums) {
-        ArrayList<Sum> sums = new ArrayList<>();
-        for (int i = 0; i < nrOfSums; i++) {
-            Sum sum = generateSum();
-            sums.add(sum);
-        }
-        return sums;
+    public Sum sum() {
+        return ensureOutputWithinBounds(() -> new Sum(generateInput(), generateOperator(), generateInput()));
     }
 
-    public Sum generateSum() {
-        Sum sum = null;
-        int output = minValue - 1;
-        while (output < minValue || output > maxValue) {
-            int input1 = generateInput();
-            String operator = random.nextBoolean() ? "+" : "-";
-            int input2 = generateInput();
+    public List<Sum> generateSum(int nrOfSums) {
+        return generate(nrOfSums, this::sum);
+    }
 
-            sum = new Sum(input1, operator, input2);
-            output = sum.getOutput();
-        }
-        return sum;
+
+    public Sum3 sum3() {
+        return ensureOutputWithinBounds(() -> new Sum3(generateInput(), generateInput(), generateInput()));
+    }
+
+    public List<Sum3> generateSum3(int nrOfSums) {
+        return generate(nrOfSums, this::sum3);
+    }
+
+
+    private String generateOperator() {
+        return random.nextBoolean() ? "+" : "-";
     }
 
     private int generateInput() {
         return minValue + random.nextInt(maxValue + 1 - minValue);
     }
 
-    public Sum3 generateSum3() {
-        Sum3 sum = null;
-        int output = minValue - 1;
+    private <T extends HasOutput> T ensureOutputWithinBounds(Supplier<T> sumSupplier) {
+        T sum = null;
+        int output = minValue -1;
         while (output < minValue || output > maxValue) {
-            int input1 = generateInput();
-            int input2 = generateInput();
-            int input3 = generateInput();
-
-            sum = new Sum3(input1, input2, input3);
+            sum = sumSupplier.get();
             output = sum.getOutput();
         }
         return sum;
     }
 
-    public List<Sum3> generate3(int nrOfSums) {
-        List<Sum3> sums = new ArrayList<>(nrOfSums);
+    private <T> List<T> generate(int nrOfSums, Supplier<T> supplier) {
+        List<T> sums = new ArrayList<>(nrOfSums);
         for (int i=0; i < nrOfSums; i++) {
-            sums.add(generateSum3());
+            sums.add(supplier.get());
         }
         return sums;
     }
+
+    
+
 }
