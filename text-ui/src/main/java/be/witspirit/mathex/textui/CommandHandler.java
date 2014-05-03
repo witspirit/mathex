@@ -6,17 +6,19 @@ public interface CommandHandler {
     /**
      * Called prior to each interaction with the user.
      *
+     * @param session The current ExerciseSession
      * @return The message to the user prior to his input
      */
-    String instructUser();
+    String instructUser(ExerciseSession session);
 
     /**
      * Called after the user has given input
      *
      * @param userInput The input the user provided
-     * @return Feedback on the userInput (NOTE: The next instruction will be obtained via instructUser)
+     * @param session The current ExerciseSession
+     * @return Feedback on the userInput (NOTE: The next instruction will be obtained via instructUser) and the next handler to install
      */
-    String handleUserInput(String userInput);
+    FeedbackAndHandler handleUserInput(String userInput, ExerciseSession session);
 
 }
 
