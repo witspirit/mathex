@@ -1,11 +1,13 @@
 package be.witspirit.mathex.textui;
 
 
+import be.witspirit.mathex.HasOutput;
 import be.witspirit.mathex.Sum;
 import be.witspirit.mathex.Sum3;
 import be.witspirit.mathex.SumGenerator;
 
 import java.io.*;
+import java.util.function.Supplier;
 
 public class TextUi {
 
@@ -102,17 +104,20 @@ public class TextUi {
 
         @Override
         public String handleUserInput(String userInput) {
+            SumGenerator sumGenerator = new SumGenerator(0, maxValue);
             switch (userInput.toUpperCase()) {
                 case "A" :
                     // Sum
-                    commandHandler = new SumExerciseHandler(new SumGenerator(0, maxValue));
-                    return "Ok, hier gaan we...";
+                    commandHandler = new SumExerciseHandler(sumGenerator);
+                    break;
                 case "B" :
                     // Sum3
-                    commandHandler = new Sum3ExerciseHandler(new SumGenerator(0, maxValue));
-                    return "Ok, hier gaan we...";
+                    commandHandler = new Sum3ExerciseHandler(sumGenerator);
+                    break;
+                default:
+                   return super.handleUserInput(userInput);
             }
-            return super.handleUserInput(userInput);
+            return "Ok, hier gaan we...";
         }
 
     }
@@ -130,20 +135,15 @@ public class TextUi {
         }
     }
 
-    private class SumExerciseHandler extends CommonHandler {
+    private abstract class ExerciseHandler<T extends HasOutput> extends CommonHandler {
 
-        private SumGenerator sumGen;
-        private Sum currentSum = null;
+        private Supplier<T> sumSupplier;
+        protected T currentSum = null;
         private boolean repeated = false;
 
-        public SumExerciseHandler(SumGenerator sumGen) {
-            this.sumGen = sumGen;
-            currentSum = sumGen.sum(); // We don't count the first exercise, as the last one will not be answered either
-        }
-
-        @Override
-        public String instructUser() {
-            return String.format("%d %s %d = ", currentSum.getInput1(), currentSum.getOperator(), currentSum.getInput2());
+        public ExerciseHandler(Supplier<T> sumSupplier) {
+            this.sumSupplier = sumSupplier;
+            currentSum = sumSupplier.get(); // We don't count the first exercise, as the last one will not be answered either
         }
 
         @Override
@@ -157,7 +157,7 @@ public class TextUi {
                     }
 
                     repeated = false;
-                    currentSum = sumGen.sum();
+                    currentSum = sumSupplier.get();
                     stats.incTotal();
 
                     return "Juist !";
@@ -174,47 +174,27 @@ public class TextUi {
         }
     }
 
-    private class Sum3ExerciseHandler extends CommonHandler {
+    private class SumExerciseHandler extends ExerciseHandler<Sum> {
 
-        private SumGenerator sumGen;
-        private Sum3 currentSum = null;
-        private boolean repeated = false;
+        public SumExerciseHandler(SumGenerator sumGen) {
+            super(sumGen::sum);
+        }
+
+        @Override
+        public String instructUser() {
+            return String.format("%d %s %d = ", currentSum.getInput1(), currentSum.getOperator(), currentSum.getInput2());
+        }
+    }
+
+    private class Sum3ExerciseHandler extends ExerciseHandler<Sum3> {
 
         public Sum3ExerciseHandler(SumGenerator sumGen) {
-            this.sumGen = sumGen;
-            currentSum = sumGen.sum3(); // We don't count the first exercise, as the last one will not be answered either
+            super(sumGen::sum3);
         }
 
         @Override
         public String instructUser() {
             return String.format("%d + %d + %d = ", currentSum.getT1(), currentSum.getT2(), currentSum.getT3());
-        }
-
-        @Override
-        public String handleUserInput(String command) {
-            try {
-                int solution = num(command);
-
-                if (solution == currentSum.getOutput()) {
-                    if (!repeated) {
-                        stats.incCorrect();
-                    }
-
-                    repeated = false;
-                    currentSum = sumGen.sum3();
-                    stats.incTotal();
-
-                    return "Juist !";
-                } else {
-                    // On mistake we keep the current sum
-                    stats.incFault();
-                    repeated = true;
-                    return "Fout !";
-                }
-
-            } catch (NumberFormatException nfe) {
-                return super.handleUserInput(command);
-            }
         }
     }
 
