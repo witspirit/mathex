@@ -3,7 +3,7 @@ package be.witspirit.mathex;
 /**
  * A Sum with 3 terms. The plus operator is assumed.
  */
-public class Sum3 implements HasOutput {
+public class Sum3 implements Exercise {
 
 
     private final int t1;
@@ -34,7 +34,12 @@ public class Sum3 implements HasOutput {
 
     @Override
     public String toString() {
-        return t1 + " + " + t2 + " + " + t3 + " = " + getOutput();
+        return getExerciseRep() + getOutput();
+    }
+
+    @Override
+    public String getExerciseRep() {
+        return t1 + " + " + t2 + " + " + t3 + " = ";
     }
 
     @Override

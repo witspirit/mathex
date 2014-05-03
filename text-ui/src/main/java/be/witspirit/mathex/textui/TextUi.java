@@ -1,10 +1,7 @@
 package be.witspirit.mathex.textui;
 
 
-import be.witspirit.mathex.HasOutput;
-import be.witspirit.mathex.Sum;
-import be.witspirit.mathex.Sum3;
-import be.witspirit.mathex.SumGenerator;
+import be.witspirit.mathex.*;
 
 import java.io.*;
 import java.util.function.Supplier;
@@ -108,11 +105,11 @@ public class TextUi {
             switch (userInput.toUpperCase()) {
                 case "A" :
                     // Sum
-                    commandHandler = new SumExerciseHandler(sumGenerator);
+                    commandHandler = new ExerciseHandler<>(sumGenerator::sum);
                     break;
                 case "B" :
                     // Sum3
-                    commandHandler = new Sum3ExerciseHandler(sumGenerator);
+                    commandHandler = new ExerciseHandler<>(sumGenerator::sum3);
                     break;
                 default:
                    return super.handleUserInput(userInput);
@@ -135,15 +132,20 @@ public class TextUi {
         }
     }
 
-    private abstract class ExerciseHandler<T extends HasOutput> extends CommonHandler {
+    private class ExerciseHandler<T extends Exercise> extends CommonHandler {
 
-        private Supplier<T> sumSupplier;
-        protected T currentSum = null;
+        private Supplier<T> exerciseSupplier;
+        protected T currentExercise = null;
         private boolean repeated = false;
 
-        public ExerciseHandler(Supplier<T> sumSupplier) {
-            this.sumSupplier = sumSupplier;
-            currentSum = sumSupplier.get(); // We don't count the first exercise, as the last one will not be answered either
+        public ExerciseHandler(Supplier<T> exerciseSupplier) {
+            this.exerciseSupplier = exerciseSupplier;
+            currentExercise = exerciseSupplier.get(); // We don't count the first exercise, as the last one will not be answered either
+        }
+
+        @Override
+        public String instructUser() {
+            return currentExercise.getExerciseRep();
         }
 
         @Override
@@ -151,13 +153,13 @@ public class TextUi {
             try {
                 int solution = num(command);
 
-                if (solution == currentSum.getOutput()) {
+                if (solution == currentExercise.getOutput()) {
                     if (!repeated) {
                         stats.incCorrect();
                     }
 
                     repeated = false;
-                    currentSum = sumSupplier.get();
+                    currentExercise = exerciseSupplier.get();
                     stats.incTotal();
 
                     return "Juist !";
@@ -173,32 +175,6 @@ public class TextUi {
             }
         }
     }
-
-    private class SumExerciseHandler extends ExerciseHandler<Sum> {
-
-        public SumExerciseHandler(SumGenerator sumGen) {
-            super(sumGen::sum);
-        }
-
-        @Override
-        public String instructUser() {
-            return String.format("%d %s %d = ", currentSum.getInput1(), currentSum.getOperator(), currentSum.getInput2());
-        }
-    }
-
-    private class Sum3ExerciseHandler extends ExerciseHandler<Sum3> {
-
-        public Sum3ExerciseHandler(SumGenerator sumGen) {
-            super(sumGen::sum3);
-        }
-
-        @Override
-        public String instructUser() {
-            return String.format("%d + %d + %d = ", currentSum.getT1(), currentSum.getT2(), currentSum.getT3());
-        }
-    }
-
-
 
     public static void main(String... args) throws IOException {
         TextUi ui = new TextUi();

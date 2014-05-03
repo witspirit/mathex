@@ -1,6 +1,6 @@
 package be.witspirit.mathex;
 
-public class Sum implements HasOutput {
+public class Sum implements Exercise {
     private int input1;
     private int input2;
     private String operator="+";
@@ -35,8 +35,14 @@ public class Sum implements HasOutput {
 
     @Override
     public String toString() {
-        return input1 + " " + operator + " " + input2 + " = " + output;
+        return getExerciseRep() + output;
     }
+
+    @Override
+    public String getExerciseRep() {
+        return input1 + " " + operator + " " + input2 + " = ";
+    }
+
 
     @Override
     public boolean equals(Object o) {
