@@ -16,6 +16,7 @@
   <modules>
     <module>sums-core</module>
     <module>text-ui</module>
+    <module>web-ui</module>
   </modules>
 
   <dependencies>
