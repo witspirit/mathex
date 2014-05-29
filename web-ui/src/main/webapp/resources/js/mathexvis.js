@@ -2,9 +2,15 @@ var exercise = mathexgen.next();
 
 $(document).ready(function() {
     $("#responseForm").submit(function(event) {
-        // alert("Received response "+$("#response").val());
-        updateExercise(mathexgen.next().exercise);
-        event.preventDefault();
+        var response = $("#response").val()-0; // Convert to number
+
+        if (response === exercise.solution) {
+            exercise = mathexgen.next();
+            updateExercise(exercise.exercise);
+        } else {
+            // There was a mistake...
+        }
+        $("#response").val("");
     });
 });
 
