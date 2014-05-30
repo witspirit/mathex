@@ -9,6 +9,7 @@ $(document).ready(function() {
             updateExercise(exercise.exercise);
         } else {
             // There was a mistake...
+            markError();
         }
         $("#response").val("");
     });
@@ -27,6 +28,16 @@ var x = d3.scale.ordinal().rangeRoundBands([0, width], .1); // No domain yet, si
 
 var exerciseCounter = 0;
 
+var markError = function () {
+    d3.select("#exDisplay").selectAll("text")
+        .transition().duration(500)
+        .style("fill", "red")
+        .transition()
+        .duration(1000)
+        .delay(1000)
+        .style("fill", "black");
+};
+
 var updateExercise = function(data) {
     x.domain(d3.range(0, data.length));
 
@@ -43,6 +54,7 @@ var updateExercise = function(data) {
         .text(function(d) { return d; })
         .attr("y", -100)
         .style("fill-opacity", 1e-6)
+        .style("fill", "black")
         .transition()
         .duration(750)
         .attr("y", 0)
