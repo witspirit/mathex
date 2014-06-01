@@ -1,16 +1,29 @@
 <!doctype html>
-<html>
+<html lang="nl">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
     <link href="resources/css/mathex.css" type="text/css"/>
+
     <title>Som Oefeningen</title>
 </head>
 <body>
+<div class="container-fluid">
+
 <h1>Som Oefeningen</h1>
 
-<div>
+<div class="row">
     <form id="responseForm" action="#">
-        <table>
+
+    <div class="col-sm-5">
+        <table id="exercises">
             <tbody>
                 <tr>
                     <td><svg id="exDisplay"></svg></td>
@@ -18,12 +31,53 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="col-sm-3">
+        <table id="statistics">
+            <tbody>
+            <tr>
+                <td>Aantal Oefeningen</td><td><span id="total">0</span></td>
+            </tr>
+            <tr>
+                <td>Aantal Juist</td><td><span id="correct">0</span></td>
+            </tr>
+            <tr>
+                <td>Aantal Fout</td><td><span id="mistakes">0</span></td>
+            </tr>
+            <tr>
+                <td>Score</td><td><span id="score">0</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-sm-4">
+
+        <table id="config">
+            <tbody>
+                <tr>
+                    <td>Min: <input type="text" id="min"/></td><td>Max: <input type="text" id="max"/></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="sum2">1 + 2</td><td><input type="checkbox" id="sum3">1 + 2 + 3</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
     </form>
+</div>
+
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8" ></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="resources/js/mathexgen.js" charset="utf-8"></script>
-<script src="resources/js/mathexvis.js" charset="utf-8"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script src="resources/js/generator.js" charset="utf-8"></script>
+<script src="resources/js/visuals.js" charset="utf-8"></script>
+<script src="resources/js/main.js" charset="utf-8"></script>
 </body>
 </html>
