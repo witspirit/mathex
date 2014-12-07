@@ -1,0 +1,18 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+
+
+<polymer-element name="math-exercise">
+    <template>
+        <span id="input1">{{input1}}</span>
+        <span id="operator">{{operator}}</span>
+        <span id="input2">{{input2}}</span>
+        =
+    </template>
+    <script>
+        Polymer({
+            input1 : 1,
+            operator : "+",
+            input2 : 2
+        })
+    </script>
+</polymer-element>
