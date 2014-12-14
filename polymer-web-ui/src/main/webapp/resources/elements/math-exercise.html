@@ -9,12 +9,14 @@
                 padding : 10px;
             }
         </style>
-        <template repeat="{{element in exercise.exercise}}">
-            <span class="ex-element">{{element}}</span>
-        </template>
-        =
-        <input type="number" step="1" autofocus id="response" value="{{response}}"/>
-        <input type="submit"/>
+        <form on-submit="{{checkSolution}}">
+            <template repeat="{{element in exercise.exercise}}">
+                <span class="ex-element">{{element}}</span>
+            </template>
+            =
+            <input type="number" step="1" autofocus id="response" value="{{response}}"/>
+            <input type="submit"/>
+        </form>
     </template>
     <script>
         Polymer({
@@ -22,7 +24,22 @@
                 exercise : [],
                 solution : undefined
             },
-            response : undefined
+            response : undefined,
+            checkSolution : function(e) {
+                var answer = this.response - 0; // Convert to number
+
+                console.log("Answer = "+answer);
+
+                if (answer === this.exercise.solution) {
+                    this.fire("math-correct");
+                } else {
+                    this.fire("math-mistake");
+                }
+                this.response = undefined;
+
+                e.preventDefault();
+                // return false; does not seem to have the desired effect, hence the preventDefault to avoid refresh
+            }
         })
     </script>
 </polymer-element>

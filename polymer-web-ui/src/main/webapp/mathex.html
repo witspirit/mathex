@@ -9,11 +9,11 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
     <!-- Element Imports -->
-    <link rel="import" href="resources/elements/math-exercise.html" />
-    <link rel="import" href="resources/elements/math-stats.html" />
-    <link rel="import" href="resources/elements/math-config.html" />
+    <link rel="import" href="resources/elements/math-exercise.html"/>
+    <link rel="import" href="resources/elements/math-stats.html"/>
+    <link rel="import" href="resources/elements/math-config.html"/>
 
-    <link rel="stylesheet" href="resources/css/mathex.css" />
+    <link rel="stylesheet" href="resources/css/mathex.css"/>
 
 </head>
 <body unresolved>
@@ -25,10 +25,51 @@
 <math-config></math-config>
 
 <script src="resources/js/generator.js" charset="utf-8"></script>
+<script src="resources/js/stats.js" charset="utf-8"></script>
 <script>
-    var exElement = document.querySelector('math-exercise');
-    var exercise = mathexgen.next();
-    exElement.exercise = exercise;
+    var mathExercise = document.querySelector('math-exercise');
+    var mathStats = document.querySelector('math-stats');
+    var mathConfig = document.querySelector('math-config');
+
+    mathExercise.exercise = mathexgen.next();
+
+    var updateStats = function () {
+        mathStats.stats = {
+            total: stats.getTotal(),
+            correct: stats.getCorrect(),
+            mistakes: stats.getMistakes(),
+            score: stats.getScore()
+        };
+    };
+
+    mathExercise.addEventListener('math-correct', function (e) {
+        console.log("math-correct Event Received");
+        mathExercise.exercise = mathexgen.next();
+        stats.trackCorrect();
+        updateStats();
+    });
+    mathExercise.addEventListener('math-mistake', function (e) {
+        console.log("math-mistake Event Received");
+        stats.trackMistake();
+        updateStats();
+    });
+
+    mathConfig.addEventListener('config-updated', function (e) {
+        console.log("config-updated Event Received");
+        var newConfig = e.detail;
+        // Have to copy over like this, since replacing the config reference in mathexgen breaks the link
+
+        console.log('newConfig = '+JSON.stringify(newConfig));
+
+        mathexgen.config.min = newConfig.min-0; // Convert to number
+        mathexgen.config.max = newConfig.max-0; // Convert to number
+        mathexgen.config.sum2 = newConfig.sum2;
+        mathexgen.config.sum3 = newConfig.sum3;
+
+        console.log('Updated mathexgen config = '+JSON.stringify(mathexgen.config));
+    });
+
+
 </script>
 </body>
 </html>
