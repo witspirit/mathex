@@ -1,0 +1,33 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+
+
+<polymer-element name="math-config">
+    <template>
+        <style>
+            :host {
+                display : block;
+                padding : 10px;
+            }
+        </style>
+        <table id="config">
+            <tbody>
+            <tr>
+                <td>Min: <input type="number" step="1" id="min" value="{{min}}"/></td>
+                <td>Max: <input type="number" step="1" id="max" value="{{max}}"/></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" id="sum2" checked="{{sum2}}">1 + 2</td>
+                <td><input type="checkbox" id="sum3" checked="{{sum3}}">1 + 2 + 3</td>
+            </tr>
+            </tbody>
+        </table>
+    </template>
+    <script>
+        Polymer({
+            min : 0,
+            max : 20,
+            sum2 : true,
+            sum3 : true
+        })
+    </script>
+</polymer-element>

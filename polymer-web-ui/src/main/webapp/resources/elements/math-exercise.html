@@ -1,18 +1,28 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
 
 
-<polymer-element name="math-exercise">
+<polymer-element name="math-exercise" attributes="exercise">
     <template>
-        <span id="input1">{{input1}}</span>
-        <span id="operator">{{operator}}</span>
-        <span id="input2">{{input2}}</span>
+        <style>
+            :host {
+                display : block;
+                padding : 10px;
+            }
+        </style>
+        <template repeat="{{element in exercise.exercise}}">
+            <span class="ex-element">{{element}}</span>
+        </template>
         =
+        <input type="number" step="1" autofocus id="response" value="{{response}}"/>
+        <input type="submit"/>
     </template>
     <script>
         Polymer({
-            input1 : 1,
-            operator : "+",
-            input2 : 2
+            exercise : {
+                exercise : [],
+                solution : undefined
+            },
+            response : undefined
         })
     </script>
 </polymer-element>

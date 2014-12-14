@@ -1,0 +1,41 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+
+
+<polymer-element name="math-stats" attributes="stats">
+    <template>
+        <style>
+            :host {
+                display : block;
+                padding : 10px;
+            }
+        </style>
+        <div class="statistics">
+            <div class="statistic">
+                <label for="total">Aantal Oefeningen</label>
+                <span id="total">{{stats.total}}</span>
+            </div>
+            <div class="statistic">
+                <label for="correct">Aantal Juist</label>
+                <span id="correct">{{stats.correct}}</span>
+            </div>
+            <div class="statistic">
+                <label for="mistakes">Aantal Fout</label>
+                <span id="mistakes">{{stats.mistakes}}</span>
+            </div>
+            <div class="statistic">
+                <label for="score">Score</label>
+                <span id="score">{{stats.score}}</span>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            stats : {
+                total : 0,
+                correct : 0,
+                mistakes : 0,
+                score : 0
+            }
+        })
+    </script>
+</polymer-element>

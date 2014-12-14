@@ -9,43 +9,26 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
     <!-- Element Imports -->
-    <link rel="import" href="resources/components/bower_components/core-header-panel/core-header-panel.html" />
-    <link rel="import" href="resources/components/bower_components/core-toolbar/core-toolbar.html" />
-    <link rel="import" href="resources/components/bower_components/paper-tabs/paper-tabs.html" />
-
     <link rel="import" href="resources/elements/math-exercise.html" />
+    <link rel="import" href="resources/elements/math-stats.html" />
+    <link rel="import" href="resources/elements/math-config.html" />
 
     <link rel="stylesheet" href="resources/css/mathex.css" />
 
 </head>
 <body unresolved>
 
-<core-header-panel>
-    <core-toolbar>
+<h1>Som Oefeningen</h1>
 
-        <paper-tabs id="tabs" selected="exercise" self-end>
-            <paper-tab name="exercise">Oefenen</paper-tab>
-            <paper-tab name="config">Instellingen</paper-tab>
-        </paper-tabs>
-    </core-toolbar>
+<math-exercise></math-exercise>
+<math-stats></math-stats>
+<math-config></math-config>
 
-    <div class="container" layout vertical center>
-
-        <math-exercise>
-
-        </math-exercise>
-
-    </div>
-
-</core-header-panel>
-
-
+<script src="resources/js/generator.js" charset="utf-8"></script>
 <script>
-    var tabs = document.querySelector('paper-tabs');
-
-    tabs.addEventListener('core-select', function() {
-        console.log("Selected: " + tabs.selected);
-    });
+    var exElement = document.querySelector('math-exercise');
+    var exercise = mathexgen.next();
+    exElement.exercise = exercise;
 </script>
 </body>
 </html>
