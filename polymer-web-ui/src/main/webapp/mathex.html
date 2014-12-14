@@ -25,7 +25,6 @@
 <math-config></math-config>
 
 <script src="resources/js/generator.js" charset="utf-8"></script>
-<script src="resources/js/stats.js" charset="utf-8"></script>
 <script>
     var mathExercise = document.querySelector('math-exercise');
     var mathStats = document.querySelector('math-stats');
@@ -33,25 +32,14 @@
 
     mathExercise.exercise = mathexgen.next();
 
-    var updateStats = function () {
-        mathStats.stats = {
-            total: stats.getTotal(),
-            correct: stats.getCorrect(),
-            mistakes: stats.getMistakes(),
-            score: stats.getScore()
-        };
-    };
-
     mathExercise.addEventListener('math-correct', function (e) {
         console.log("math-correct Event Received");
         mathExercise.exercise = mathexgen.next();
-        stats.trackCorrect();
-        updateStats();
+        mathStats.trackCorrect();
     });
     mathExercise.addEventListener('math-mistake', function (e) {
         console.log("math-mistake Event Received");
-        stats.trackMistake();
-        updateStats();
+        mathStats.trackMistake();
     });
 
     mathConfig.addEventListener('config-updated', function (e) {

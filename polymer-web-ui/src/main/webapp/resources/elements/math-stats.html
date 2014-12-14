@@ -1,7 +1,7 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
 
 
-<polymer-element name="math-stats" attributes="stats">
+<polymer-element name="math-stats">
     <template>
         <style>
             :host {
@@ -12,30 +12,48 @@
         <div class="statistics">
             <div class="statistic">
                 <label for="total">Aantal Oefeningen</label>
-                <span id="total">{{stats.total}}</span>
+                <span id="total">{{total}}</span>
             </div>
             <div class="statistic">
                 <label for="correct">Aantal Juist</label>
-                <span id="correct">{{stats.correct}}</span>
+                <span id="correct">{{correct}}</span>
             </div>
             <div class="statistic">
                 <label for="mistakes">Aantal Fout</label>
-                <span id="mistakes">{{stats.mistakes}}</span>
+                <span id="mistakes">{{mistakes}}</span>
             </div>
             <div class="statistic">
                 <label for="score">Score</label>
-                <span id="score">{{stats.score}}</span>
+                <span id="score">{{score}}</span>
             </div>
         </div>
     </template>
     <script>
         Polymer({
-            stats : {
-                total : 0,
-                correct : 0,
-                mistakes : 0,
-                score : 0
+            correct : 0,
+            mistakes : 0,
+            reset : function() {
+                this.correct = 0;
+                this.mistakes = 0;
+            },
+            trackCorrect : function() {
+                console.log('track correct');
+                this.correct++;
+            },
+            trackMistake : function() {
+                console.log('track mistake');
+                this.mistakes++;
+            },
+            computeScore : function(correct, total) {
+                if (total === 0) {
+                    return 100;
+                }
+                return (correct / total) * 100;
+            },
+            computed : {
+                total : 'correct + mistakes',
+                score : 'computeScore(correct, total)'
             }
-        })
+        });
     </script>
 </polymer-element>
