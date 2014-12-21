@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
     <!-- Element Imports -->
-    <link rel="import" href="resources/elements/polymer-experiment.html"/>
     <link rel="import" href="resources/elements/math-gen.html"/>
     <link rel="import" href="resources/elements/math-exercise.html"/>
     <link rel="import" href="resources/elements/math-stats.html"/>
@@ -21,7 +20,6 @@
 <body unresolved>
 
 <h1>Som Oefeningen</h1>
-<polymer-experiment></polymer-experiment>
 <math-gen></math-gen>
 <math-exercise></math-exercise>
 <math-stats></math-stats>
@@ -30,14 +28,10 @@
 <script>
     // Ensure Polymer has been able to do its work
     window.addEventListener('polymer-ready', function(e) {
-        var polymerExp = document.querySelector('polymer-experiment');
         var mathGen = document.querySelector('math-gen');
         var mathExercise = document.querySelector('math-exercise');
         var mathStats = document.querySelector('math-stats');
         var mathConfig = document.querySelector('math-config');
-
-        // polymerExp.printTest();
-        // polymerExp.printTestViaComponent();
 
         mathExercise.exercise = mathGen.next();
 

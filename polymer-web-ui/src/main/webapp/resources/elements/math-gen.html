@@ -13,19 +13,15 @@
             sum2 : true,
             sum3 : true,
             _selectDigit : function() {
-                console.log("selectDigit this = "+this);
                 return this.$.randomUtil.intBetween(this.min, this.max);
             },
             _selectOperator : function() {
-                console.log("selectOperator this = "+this);
                 return this.$.randomUtil.boolean() ? "+" : "-";
             },
             _isInBounds : function(value) {
-                console.log("isInBounds this = "+this);
                 return value >= this.min && value <= this.max;
             },
             _compute : function(t1, op, t2) {
-                console.log("compute this = "+this);
                 if (op === "+") {
                     return t1 + t2;
                 } else if (op === "-") {
@@ -34,7 +30,6 @@
                 throw "Unsupported operator " + op;
             },
             _createSum2 : function() {
-                console.log("createSum2 this = "+this);
                 // Sum 2
                 var t1 = this._selectDigit();
                 var t2 = this._selectDigit();
@@ -47,7 +42,6 @@
                 };
             },
             _createSum3 : function() {
-                console.log("createSum3 this = "+this);
                 // Sum 3
                 var t1 = this._selectDigit();
                 var t2 = this._selectDigit();
@@ -60,7 +54,6 @@
                 };
             },
             _selectSumType : function() {
-                console.log("selectSumType this = "+this);
                 if (this.sum2 && !this.sum3) {
                     return this._createSum2;
                 } else if (!this.sum2 && this.sum3) {
@@ -71,11 +64,9 @@
                 }
             },
             _generateExercise : function() {
-                console.log("generateExercise this = "+this);
                 return this._selectSumType().apply(this); // Invoke the function result of the selectSumType, and explicitly pass on this to work on this polymer instance
             },
             next : function() { // Originally called generateExerciseWithinBounds
-                console.log("next this = "+this);
                 var exercise = this._generateExercise();
                 var retryCounter = 0;
                 while (!this._isInBounds(exercise.solution)) {
