@@ -47,15 +47,11 @@
 
         mathConfig.addEventListener('config-updated', function (e) {
             console.log("config-updated Event Received");
-            var newConfig = e.detail;
 
-            console.log('newConfig = '+JSON.stringify(newConfig));
-
-            mathGen.min = newConfig.min-0; // Convert to number
-            mathGen.max = newConfig.max-0; // Convert to number
-            mathGen.sum2 = newConfig.sum2;
-            mathGen.sum3 = newConfig.sum3;
-
+            mathGen.min = mathConfig.min-0; // Convert to number
+            mathGen.max = mathConfig.max-0; // Convert to number
+            mathGen.sum2 = mathConfig.sum2;
+            mathGen.sum3 = mathConfig.sum3;
         });
     });
 </script>

@@ -1,7 +1,7 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
 
 
-<polymer-element name="math-config" attributes="config">
+<polymer-element name="math-config" attributes="min max sum2 sum3">
     <template>
         <style>
             :host {
@@ -9,37 +9,33 @@
                 padding: 10px;
             }
         </style>
-        <template bind="{{config}}">
-            <table id="config">
-                <tbody>
-                <tr>
-                    <td>Min: <input type="number" step="1" id="min" value="{{min}}"/></td>
-                    <td>Max: <input type="number" step="1" id="max" value="{{max}}"/></td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" id="sum2" checked="{{sum2}}">1 + 2</td>
-                    <td><input type="checkbox" id="sum3" checked="{{sum3}}">1 + 2 + 3</td>
-                </tr>
-                </tbody>
-            </table>
-        </template>
+        <table id="config">
+            <tbody>
+            <tr>
+                <td>Min: <input type="number" step="1" id="min" value="{{min}}"/></td>
+                <td>Max: <input type="number" step="1" id="max" value="{{max}}"/></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" id="sum2" checked="{{sum2}}">1 + 2</td>
+                <td><input type="checkbox" id="sum3" checked="{{sum3}}">1 + 2 + 3</td>
+            </tr>
+            </tbody>
+        </table>
     </template>
     <script>
         Polymer({
-            config: {
-                min: 0,
-                max: 20,
-                sum2: true,
-                sum3: true
-            },
+            min: 0,
+            max: 20,
+            sum2: true,
+            sum3: true,
             observe: {
-                'config.min': 'configChanged',
-                'config.max': 'configChanged',
-                'config.sum2': 'configChanged',
-                'config.sum3': 'configChanged'
+                'min': 'configChanged',
+                'max': 'configChanged',
+                'sum2': 'configChanged',
+                'sum3': 'configChanged'
             },
             configChanged: function () {
-                this.fire('config-updated', this.config);
+                this.fire('config-updated');
             }
         })
     </script>
