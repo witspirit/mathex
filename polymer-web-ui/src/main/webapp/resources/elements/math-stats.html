@@ -1,7 +1,7 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
 
 
-<polymer-element name="math-stats">
+<polymer-element name="math-stats" attributes="correct mistakes total score">
     <template>
         <style>
             :host {
@@ -35,14 +35,6 @@
             reset : function() {
                 this.correct = 0;
                 this.mistakes = 0;
-            },
-            trackCorrect : function() {
-                console.log('track correct');
-                this.correct++;
-            },
-            trackMistake : function() {
-                console.log('track mistake');
-                this.mistakes++;
             },
             computeScore : function(correct, total) {
                 if (total === 0) {

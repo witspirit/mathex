@@ -1,0 +1,102 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="random-util.html">
+
+
+<polymer-element name="math-gen" attributes="min max sum2 sum3">
+    <template>
+        <random-util id="randomUtil"></random-util>
+    </template>
+    <script>
+        Polymer({
+            min : 0,
+            max : 20,
+            sum2 : true,
+            sum3 : true,
+            _selectDigit : function() {
+                console.log("selectDigit this = "+this);
+                return this.$.randomUtil.intBetween(this.min, this.max);
+            },
+            _selectOperator : function() {
+                console.log("selectOperator this = "+this);
+                return this.$.randomUtil.boolean() ? "+" : "-";
+            },
+            _isInBounds : function(value) {
+                console.log("isInBounds this = "+this);
+                return value >= this.min && value <= this.max;
+            },
+            _compute : function(t1, op, t2) {
+                console.log("compute this = "+this);
+                if (op === "+") {
+                    return t1 + t2;
+                } else if (op === "-") {
+                    return t1 - t2;
+                }
+                throw "Unsupported operator " + op;
+            },
+            _createSum2 : function() {
+                console.log("createSum2 this = "+this);
+                // Sum 2
+                var t1 = this._selectDigit();
+                var t2 = this._selectDigit();
+                var o1 = this._selectOperator();
+                var result = this._compute(t1, o1, t2);
+
+                return {
+                    exercise : [ t1, o1, t2],
+                    solution : result
+                };
+            },
+            _createSum3 : function() {
+                console.log("createSum3 this = "+this);
+                // Sum 3
+                var t1 = this._selectDigit();
+                var t2 = this._selectDigit();
+                var t3 = this._selectDigit();
+                var result = this._compute(this._compute(t1, "+", t2), "+", t3);
+
+                return {
+                    exercise : [ t1, "+", t2, "+", t3],
+                    solution : result
+                };
+            },
+            _selectSumType : function() {
+                console.log("selectSumType this = "+this);
+                if (this.sum2 && !this.sum3) {
+                    return this._createSum2;
+                } else if (!this.sum2 && this.sum3) {
+                    return this._createSum3;
+                } else {
+                    // All other permutations are considered a random mix
+                    return this.$.randomUtil.boolean() ? this._createSum2 : this._createSum3;
+                }
+            },
+            _generateExercise : function() {
+                console.log("generateExercise this = "+this);
+                return this._selectSumType().apply(this); // Invoke the function result of the selectSumType, and explicitly pass on this to work on this polymer instance
+            },
+            next : function() { // Originally called generateExerciseWithinBounds
+                console.log("next this = "+this);
+                var exercise = this._generateExercise();
+                var retryCounter = 0;
+                while (!this._isInBounds(exercise.solution)) {
+                    exercise = this._generateExercise();
+                    retryCounter++;
+
+                    if (retryCounter >= 100) {
+                        // We apparently fail to generate an exercise that meets the criteria...
+                        // Let us reset the configuration to something safe.
+                        // NOTE: We do not replace the object as we have exposed it via the return object
+                        this.min = 0;
+                        this.max = 20;
+                        this.sum2 = true;
+                        this.sum3 = true;
+
+                        console.log("[WARNING] Automatically reset configuration, since the current configuration could not yield a valid result");
+                    }
+                }
+                return exercise;
+            } //,
+            // next : this._generateExerciseWithinBounds // Wanted to have this indirection, but the this reference is not yet ready when it is evaluated
+        });
+    </script>
+</polymer-element>

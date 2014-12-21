@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
     <!-- Element Imports -->
+    <link rel="import" href="resources/elements/polymer-experiment.html"/>
+    <link rel="import" href="resources/elements/math-gen.html"/>
     <link rel="import" href="resources/elements/math-exercise.html"/>
     <link rel="import" href="resources/elements/math-stats.html"/>
     <link rel="import" href="resources/elements/math-config.html"/>
@@ -19,45 +21,49 @@
 <body unresolved>
 
 <h1>Som Oefeningen</h1>
-
+<polymer-experiment></polymer-experiment>
+<math-gen></math-gen>
 <math-exercise></math-exercise>
 <math-stats></math-stats>
 <math-config></math-config>
 
-<script src="resources/js/generator.js" charset="utf-8"></script>
 <script>
-    var mathExercise = document.querySelector('math-exercise');
-    var mathStats = document.querySelector('math-stats');
-    var mathConfig = document.querySelector('math-config');
+    // Ensure Polymer has been able to do its work
+    window.addEventListener('polymer-ready', function(e) {
+        var polymerExp = document.querySelector('polymer-experiment');
+        var mathGen = document.querySelector('math-gen');
+        var mathExercise = document.querySelector('math-exercise');
+        var mathStats = document.querySelector('math-stats');
+        var mathConfig = document.querySelector('math-config');
 
-    mathExercise.exercise = mathexgen.next();
+        // polymerExp.printTest();
+        // polymerExp.printTestViaComponent();
 
-    mathExercise.addEventListener('math-correct', function (e) {
-        console.log("math-correct Event Received");
-        mathExercise.exercise = mathexgen.next();
-        mathStats.trackCorrect();
+        mathExercise.exercise = mathGen.next();
+
+        mathExercise.addEventListener('math-correct', function (e) {
+            console.log("math-correct Event Received");
+            mathExercise.exercise = mathGen.next();
+            mathStats.correct++;
+        });
+        mathExercise.addEventListener('math-mistake', function (e) {
+            console.log("math-mistake Event Received");
+            mathStats.mistakes++;
+        });
+
+        mathConfig.addEventListener('config-updated', function (e) {
+            console.log("config-updated Event Received");
+            var newConfig = e.detail;
+
+            console.log('newConfig = '+JSON.stringify(newConfig));
+
+            mathGen.min = newConfig.min-0; // Convert to number
+            mathGen.max = newConfig.max-0; // Convert to number
+            mathGen.sum2 = newConfig.sum2;
+            mathGen.sum3 = newConfig.sum3;
+
+        });
     });
-    mathExercise.addEventListener('math-mistake', function (e) {
-        console.log("math-mistake Event Received");
-        mathStats.trackMistake();
-    });
-
-    mathConfig.addEventListener('config-updated', function (e) {
-        console.log("config-updated Event Received");
-        var newConfig = e.detail;
-        // Have to copy over like this, since replacing the config reference in mathexgen breaks the link
-
-        console.log('newConfig = '+JSON.stringify(newConfig));
-
-        mathexgen.config.min = newConfig.min-0; // Convert to number
-        mathexgen.config.max = newConfig.max-0; // Convert to number
-        mathexgen.config.sum2 = newConfig.sum2;
-        mathexgen.config.sum3 = newConfig.sum3;
-
-        console.log('Updated mathexgen config = '+JSON.stringify(mathexgen.config));
-    });
-
-
 </script>
 </body>
 </html>

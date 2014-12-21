@@ -1,0 +1,33 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+
+
+<polymer-element name="random-util">
+    <script>
+        (function() {
+            /**
+             * Returns a random number between min and max
+             */
+            function getRandomArbitrary (min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            /**
+             * Returns a random integer between min and max
+             * Using Math.round() will give you a non-uniform distribution!
+             */
+            function getRandomInt (min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function getRandomBoolean() {
+                return Math.random() > 0.5 ? true : false;
+            }
+
+            return Polymer({
+                between : getRandomArbitrary,
+                intBetween : getRandomInt,
+                boolean : getRandomBoolean
+            });
+        })();
+    </script>
+</polymer-element>

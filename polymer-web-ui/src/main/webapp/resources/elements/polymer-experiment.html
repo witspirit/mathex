@@ -1,0 +1,45 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="random-util.html">
+
+
+<polymer-element name="polymer-experiment">
+    <template>
+        <random-util id="randomUtil"></random-util>
+    </template>
+    <script>
+        (function() {
+            // var's I put here are statically shared across all instances of this component
+            // this is probably not what I want
+
+            var secondaryFunction = function() {
+                // This is not initialized to the Polymer Component Instance, but to Window
+                console.log("This is not what you would expect : "+this);
+            };
+
+            var primaryFunction = function() {
+                // This method is invoked via the Polymer component and hence will automatically
+                // get applied the this context as being the polymer component instance.
+                console.log("This is what you would expect : "+this);
+                // So we can access the necessary properties:
+                console.log("Primary Random Boolean : "+this.$.randomUtil.boolean());
+
+                // Here we just invoke another method, but this one is not invoked by Polymer
+                // and hence does not get the this propagated.
+                secondaryFunction();
+            };
+
+            return Polymer({
+                printTest : primaryFunction,
+                secondaryOnComponent : function() {
+                    // Since this one will be called via this, this will be initialized properly
+                    console.log("secondaryOnComponent : This = "+this);
+                },
+                printTestViaComponent : function() {
+                    console.log("printTestViaComponent : This = "+this);
+                    // Need to invoke via this to be able to reach it
+                    this.secondaryOnComponent();
+                }
+            });
+        })();
+    </script>
+</polymer-element>
