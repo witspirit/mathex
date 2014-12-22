@@ -2,7 +2,7 @@
 <link rel="import" href="random-util.html">
 
 
-<polymer-element name="math-gen" attributes="min max sum2 sum3">
+<polymer-element name="math-gen" attributes="min max sum2 sum3 exercise">
     <template>
         <random-util id="randomUtil"></random-util>
     </template>
@@ -12,6 +12,10 @@
             max : 20,
             sum2 : true,
             sum3 : true,
+            exercise : {
+                exercise : [ 1, '+', 2],
+                solution : 3
+            },
             _selectDigit : function() {
                 return this.$.randomUtil.intBetween(this.min, this.max);
             },
@@ -87,6 +91,7 @@
                         this.fire('config-auto-reset', { reason : reason});
                     }
                 }
+                this.exercise = exercise;
                 return exercise;
             },
             ready : function() {

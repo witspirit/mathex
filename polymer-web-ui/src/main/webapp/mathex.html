@@ -26,8 +26,8 @@
 <h1>Som Oefeningen</h1>
 
 <template is="auto-binding">
-    <math-gen min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}" on-config-auto-reset="{{configReset}}"></math-gen>
-    <math-exercise></math-exercise>
+    <math-gen min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}" exercise="{{exercise}}" on-config-auto-reset="{{configReset}}"></math-gen>
+    <math-exercise exercise="{{exercise}}"></math-exercise>
     <math-stats></math-stats>
     <math-config min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}"></math-config>
 </template>
@@ -42,11 +42,11 @@
         var mathConfig = document.querySelector('math-config');
         var template = document.querySelector('template');
 
-        mathExercise.exercise = mathGen.next();
+        mathGen.next();
 
         mathExercise.addEventListener('math-correct', function (e) {
             console.log("math-correct Event Received");
-            mathExercise.exercise = mathGen.next();
+            mathGen.next();
             mathStats.correct++;
         });
         mathExercise.addEventListener('math-mistake', function (e) {
