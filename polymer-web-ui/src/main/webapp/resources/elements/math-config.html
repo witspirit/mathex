@@ -27,16 +27,7 @@
             min: 0,
             max: 20,
             sum2: true,
-            sum3: true,
-            observe: {
-                'min': 'configChanged',
-                'max': 'configChanged',
-                'sum2': 'configChanged',
-                'sum3': 'configChanged'
-            },
-            configChanged: function () {
-                this.fire('config-updated');
-            }
+            sum3: true
         })
     </script>
 </polymer-element>

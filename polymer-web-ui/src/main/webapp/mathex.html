@@ -8,6 +8,10 @@
 
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
+    <!-- Polymer import for auto-binding -->
+    <link rel="import" href="resources/components/bower_components/polymer/polymer.html" />
+
+
     <!-- Element Imports -->
     <link rel="import" href="resources/elements/math-gen.html"/>
     <link rel="import" href="resources/elements/math-exercise.html"/>
@@ -20,18 +24,22 @@
 <body unresolved>
 
 <h1>Som Oefeningen</h1>
-<math-gen></math-gen>
-<math-exercise></math-exercise>
-<math-stats></math-stats>
-<math-config></math-config>
+
+<template is="auto-binding">
+    <math-gen min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}"></math-gen>
+    <math-exercise></math-exercise>
+    <math-stats></math-stats>
+    <math-config min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}"></math-config>
+</template>
 
 <script>
     // Ensure Polymer has been able to do its work
-    window.addEventListener('polymer-ready', function(e) {
+    // window.addEventListener('polymer-ready', function(e) { // For normal polymer
+    window.addEventListener('template-bound', function(e) { // For auto-binding
         var mathGen = document.querySelector('math-gen');
+        console.log("mathGen = "+mathGen);
         var mathExercise = document.querySelector('math-exercise');
         var mathStats = document.querySelector('math-stats');
-        var mathConfig = document.querySelector('math-config');
 
         mathExercise.exercise = mathGen.next();
 
@@ -45,14 +53,6 @@
             mathStats.mistakes++;
         });
 
-        mathConfig.addEventListener('config-updated', function (e) {
-            console.log("config-updated Event Received");
-
-            mathGen.min = mathConfig.min-0; // Convert to number
-            mathGen.max = mathConfig.max-0; // Convert to number
-            mathGen.sum2 = mathConfig.sum2;
-            mathGen.sum3 = mathConfig.sum3;
-        });
     });
 </script>
 </body>
