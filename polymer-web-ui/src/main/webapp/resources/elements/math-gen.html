@@ -82,7 +82,9 @@
                         this.sum2 = true;
                         this.sum3 = true;
 
-                        console.log("[WARNING] Automatically reset configuration, since the current configuration could not yield a valid result");
+                        var reason = "[WARNING] Automatically reset configuration, since the current configuration could not yield a valid result";
+                        console.log(reason);
+                        this.fire('config-auto-reset', { reason : reason});
                     }
                 }
                 return exercise;

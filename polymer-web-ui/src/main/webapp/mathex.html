@@ -26,7 +26,7 @@
 <h1>Som Oefeningen</h1>
 
 <template is="auto-binding">
-    <math-gen min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}"></math-gen>
+    <math-gen min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}" on-config-auto-reset="{{configReset}}"></math-gen>
     <math-exercise></math-exercise>
     <math-stats></math-stats>
     <math-config min="{{min}}" max="{{max}}" sum2="{{sum2}}" sum3="{{sum3}}"></math-config>
@@ -37,9 +37,10 @@
     // window.addEventListener('polymer-ready', function(e) { // For normal polymer
     window.addEventListener('template-bound', function(e) { // For auto-binding
         var mathGen = document.querySelector('math-gen');
-        console.log("mathGen = "+mathGen);
         var mathExercise = document.querySelector('math-exercise');
         var mathStats = document.querySelector('math-stats');
+        var mathConfig = document.querySelector('math-config');
+        var template = document.querySelector('template');
 
         mathExercise.exercise = mathGen.next();
 
@@ -52,6 +53,10 @@
             console.log("math-mistake Event Received");
             mathStats.mistakes++;
         });
+
+        template.configReset = function(event, detail, sender) {
+            mathConfig.markExternalConfigChange(detail.reason);
+        };
 
     });
 </script>

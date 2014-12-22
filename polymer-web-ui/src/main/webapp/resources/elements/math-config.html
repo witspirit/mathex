@@ -8,9 +8,18 @@
                 display: block;
                 padding: 10px;
             }
+
+            .markChanged {
+                background-color: red;
+            }
         </style>
-        <table id="config">
+        <table id="config" class="{{changeReason == '' ? '': 'markChanged'}}">
             <tbody>
+            <template if="{{changeReason != ''}}">
+            <tr>
+                <td colspan="2">{{changeReason}}</td>
+            </tr>
+            </template>
             <tr>
                 <td>Min: <input type="number" step="1" id="min" value="{{min}}"/></td>
                 <td>Max: <input type="number" step="1" id="max" value="{{max}}"/></td>
@@ -27,7 +36,14 @@
             min: 0,
             max: 20,
             sum2: true,
-            sum3: true
+            sum3: true,
+            changeReason : '',
+            markExternalConfigChange : function(reason) {
+                this.changeReason = reason;
+                this.job("clearReason", function() {
+                    this.changeReason = '';
+                }, 1500);
+            }
         })
     </script>
 </polymer-element>
