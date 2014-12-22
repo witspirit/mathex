@@ -9,24 +9,26 @@
                 padding : 10px;
             }
         </style>
-        <div class="statistics">
-            <div class="statistic">
-                <label for="total">Aantal Oefeningen</label>
-                <span id="total">{{total}}</span>
-            </div>
-            <div class="statistic">
-                <label for="correct">Aantal Juist</label>
-                <span id="correct">{{correct}}</span>
-            </div>
-            <div class="statistic">
-                <label for="mistakes">Aantal Fout</label>
-                <span id="mistakes">{{mistakes}}</span>
-            </div>
-            <div class="statistic">
-                <label for="score">Score</label>
-                <span id="score">{{score}}</span>
-            </div>
-        </div>
+        <table class="statistics">
+            <tbody>
+                <tr>
+                    <td><label for="total">Aantal Oefeningen</label></td>
+                    <td id="total">{{total}}</td>
+                </tr>
+                <tr>
+                    <td><label for="correct">Aantal Juist</label></td>
+                    <td id="correct">{{correct}}</td>
+                </tr>
+                <tr>
+                    <td><label for="mistakes">Aantal Fout</label></td>
+                    <td id="mistakes">{{mistakes}}</td>
+                </tr>
+                <tr>
+                    <td><label for="score">Score</label></td>
+                    <td id="score">{{score}}</td>
+                </tr>
+            </tbody>
+        </table>
     </template>
     <script>
         Polymer({
